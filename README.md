@@ -5,20 +5,26 @@ Version 1.1.0.rc1
 An Open-source application to run your arts organization.  Features include:
 
 * Free and paid ticketing on the web
+* Discount codes
 * Patron tracking
 * Patron importing and exporting
-* Order tracking
+* Order tracking, importing, and exporting
 * Door lists
-* Box office
+* Box office for in-person sales
+* Advanced patron searching
 
 And coming soon...
 
-* Advanced patron searching
 * [Mailchimp](http://mailchimp.com) integration
+* Completely re-designed person record interface.
+* Memberships
+* Flex-passes
 
 # About
 
 Creating your own Artful.ly OSE installation requires a basic understanding of Git, Heroku, Ruby and Rails.
+
+**If you don't know what any of that means** then you probably want our [hosted event ticketing version of Artful.ly](http://www.artful.ly)
 
 ## Dependencies
 
@@ -42,6 +48,15 @@ Make sure you have the following installed on your system
 Also, before you begin you should set up your production MySQL database.
 
 ## Clone the app 
+
+### For the most recent stable release
+
+    git clone 1.0.0 git@github.com:fracturedatlas/artfully_app.git
+    cd artfully_app
+
+### For the edge release
+
+Every effort is made to ensure that master is working correctly but at any time it may be broken.  If you're interested in contributing, testing pre-releases, etc, pull down master and work from there.
 
     git clone git@github.com:fracturedatlas/artfully_app.git
     cd artfully_app
