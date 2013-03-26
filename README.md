@@ -106,6 +106,7 @@ Artful.ly OSE requires the following environment variables to be set if they are
     WEBSOLR_URL
 
 Additionally these are defaulted in the config.ru and config/unicorn.rb files but can be set in the environment as well
+    
     UNICORN_WORKERS
     UNICORN_TIMEOUT
     UNICORN_BACKLOG
