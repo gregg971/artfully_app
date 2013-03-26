@@ -48,26 +48,32 @@
       <section id="main_content">
         <h1>Artful.ly Open Source Edition</h1>
 
-<p>Version 1.0.0.rc4</p>
+<p>Version 1.1.0.rc1</p>
 
 <p>An Open-source application to run your arts organization.  Features include:</p>
 
 <ul>
 <li>Free and paid ticketing on the web</li>
+<li>Discount codes</li>
 <li>Patron tracking</li>
 <li>Patron importing and exporting</li>
-<li>Order tracking</li>
+<li>Order tracking, importing, and exporting</li>
 <li>Door lists</li>
-<li>Box office</li>
+<li>Box office for in-person sales</li>
+<li>Advanced patron searching</li>
 </ul><p>And coming soon...</p>
 
 <ul>
-<li>Advanced patron searching</li>
 <li>
 <a href="http://mailchimp.com">Mailchimp</a> integration</li>
+<li>Completely re-designed person record interface.</li>
+<li>Memberships</li>
+<li>Flex-passes</li>
 </ul><h1>About</h1>
 
 <p>Creating your own Artful.ly OSE installation requires a basic understanding of Git, Heroku, Ruby and Rails.</p>
+
+<p><strong>If you don't know what any of that means</strong> then you probably want our <a href="http://www.artful.ly">hosted event ticketing version of Artful.ly</a></p>
 
 <h2>Dependencies</h2>
 
@@ -92,6 +98,16 @@
 
 <h2>Clone the app</h2>
 
+<h3>For the most recent stable release</h3>
+
+<pre><code>git clone 1.0.0-stable git@github.com:fracturedatlas/artfully_app.git
+cd artfully_app
+</code></pre>
+
+<h3>For the edge release</h3>
+
+<p>Every effort is made to ensure that master is working correctly but at any time it may be broken.  If you're interested in contributing, testing pre-releases, etc, pull down master and work from there.</p>
+
 <pre><code>git clone git@github.com:fracturedatlas/artfully_app.git
 cd artfully_app
 </code></pre>
@@ -104,24 +120,27 @@ bundle install
 
 <h2>Database</h2>
 
-<p>Update database.yml to point to your mysql database.  Specify a local database and a production database.</p>
+<p>Update database.yml to point to your mysql database.  Specify a local database and a production database. You can create your databases like so:</p>
+
+<pre><code>rake db:create:all
+</code></pre>
 
 <p>Run the migrations</p>
 
-<pre><code>bundle exec rake artfully_ose_engine:install:migrations
-bundle exec rake db:migrate
+<pre><code>rake artfully_ose_engine:install:migrations
+rake db:migrate
 </code></pre>
 
 <h2>Running Locally</h2>
 
 <p>If you intend to do any custom development or testing, go ahead and set up Artful.ly OSE locally on your machine.  If you have no interest in this, feel free to skip ahead to Deployment to Heroku</p>
 
-<p>Open a rails console and run</p>
+<p>Open a rails console with <code>rails console</code> and run</p>
 
 <pre><code>User.create!({:email =&gt; "youradmin@example.com", :password =&gt; "your_strong_password", :password_confirmation =&gt; "your_strong_password" })
 </code></pre>
 
-<h3>Run</h3>
+<h3>Turn on the local server</h3>
 
 <pre><code>foreman start
 </code></pre>
@@ -142,6 +161,15 @@ S3_SECRET_ACCESS_KEY
 
 WEBSOLR_URL
 </code></pre>
+
+<p>Additionally these are defaulted in the config.ru and config/unicorn.rb files but can be set in the environment as well
+    UNICORN_WORKERS
+    UNICORN_TIMEOUT
+    UNICORN_BACKLOG
+    MAX_REQUEST_MIN <em>used by unicorn killer</em>
+    MAX_REQUEST_MAX <em>used by unicorn killer</em>
+    OOM_MIN <em>used by unicorn killer</em>
+    OOM_MAX <em>used by unicorn killer</em></p>
 
 <h2>Deployment to Heroku</h2>
 
