@@ -51,7 +51,7 @@ Also, before you begin you should set up your production MySQL database.
 
 ### For the most recent stable release
 
-    git clone 1.0.0 git@github.com:fracturedatlas/artfully_app.git
+    git clone 1.0.0-stable git@github.com:fracturedatlas/artfully_app.git
     cd artfully_app
 
 ### For the edge release
