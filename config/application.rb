@@ -47,7 +47,7 @@ module ArtfullyApp
     #ArtfullyOse asset paths
     config.assets.paths << "#{Rails.root}/app/assets/sass"
     config.assets.paths << "#{Rails.root}/app/assets/jquery"
-    config.assets.precompile += ['jquery/*','themes/default.css','widget-cart.css', 'storefront.css', 'pages/pages.css', 'printing.css', 'bootstrap.css', 'bootstrap-overrides.css', 'box-office.js', 'storefront.js', 'bootstrap.js', 'pages.js', 'widget-cart.js', 'artfully.js', 'artfully-v2.js']
+    config.assets.precompile += ['jquery/*','themes/default.css','widget-cart.css', 'storefront.css', 'pages/pages.css', 'printing.css', 'bootstrap.css', 'bootstrap-overrides.css', 'box-office.js', 'storefront.js', 'bootstrap.js', 'pages.js', 'widget-cart.js', 'artfully.js', 'artfully-v2.js', 'slicer.js']
     
     config.after_initialize do 
       #Braintree config
