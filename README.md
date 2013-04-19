@@ -1,6 +1,6 @@
 # Artful.ly Open Source Edition
 
-Version 1.1.0.rc2
+Version 1.1.0
 
 An Open-source application to run your arts organization.  Features include:
 
