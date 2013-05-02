@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130417231312) do
+ActiveRecord::Schema.define(:version => 20130420233338) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -252,6 +252,7 @@ ActiveRecord::Schema.define(:version => 20130417231312) do
     t.datetime "updated_at"
     t.datetime "occurred_at"
     t.integer  "organization_id"
+    t.boolean  "starred",         :default => false
   end
 
   add_index "notes", ["organization_id"], :name => "index_notes_on_organization_id"

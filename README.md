@@ -1,6 +1,6 @@
 # Artful.ly Open Source Edition
 
-Version 1.1.0
+Version 1.2.0
 
 An Open-source application to run your arts organization.  Features include:
 
@@ -129,7 +129,7 @@ __Please note__ that Artful.ly OSE depends on delayed jobs for locking tickets w
 
 ### Sending email
 
-Artful.ly OSE __WILL NOT PROCESS TRANSACTIONS WITHOUT A VALID SMTP SETUP__ We will make this more flexible in a future release.
+Artful.ly will not send confirmation emails to customers without a valid SMTP setup
 
 A good option is to enable SendGrid.  SendGrid has a free usage tier which integrates with Heroku.  See the note in `Setup SendGrid` to enable SendGrid.  Artful.ly OSE will work with SendGrid without any modification necessary.
 
