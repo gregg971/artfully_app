@@ -18,13 +18,16 @@ New in 1.2
 * Completely re-designed person record interface.
 * Completely re-designed checkout and storefront.
 * Better ticket types and capacity management. Assign more than one price to a single ticket.
-* Memberships
+* Memberships. Your organization can sell memberships in your store, offer events and tickets to members only, and provide a username and password to members.
 * Delayed Job is now required
 
 And coming soon...
 
 * [Mailchimp](http://mailchimp.com) integration
 * Flex-passes
+* Relationships
+* Householding
+* QR-coded Scannable tickets
 
 # About
 
