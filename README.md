@@ -51,14 +51,16 @@ Also, before you begin you should set up your production MySQL database.
 
 ### For the most recent stable release
 
-    git clone 1.0.0-stable git@github.com:fracturedatlas/artfully_app.git
+Bugs notwithstanding, *Master is production ready at all times*. 
+
+    git clone git@github.com:fracturedatlas/artfully_app.git
     cd artfully_app
 
 ### For the edge release
 
-Every effort is made to ensure that master is working correctly but at any time it may be broken.  If you're interested in contributing, testing pre-releases, etc, pull down master and work from there.
+All ongoing development happens in topic branches. Note this is different from the branch strategy of Artfully OSE.
 
-    git clone git@github.com:fracturedatlas/artfully_app.git
+    git clone <BRANCH> git@github.com:fracturedatlas/artfully_app.git
     cd artfully_app
 
 ### Setup
