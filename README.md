@@ -13,11 +13,17 @@ An Open-source application to run your arts organization.  Features include:
 * Box office for in-person sales
 * Advanced patron searching
 
+New in 1.2
+
+* Completely re-designed person record interface.
+* Completely re-designed checkout and storefront.
+* Better ticket types and capacity management. Assign more than one price to a single ticket.
+* Memberships
+* Delayed Job is now required
+
 And coming soon...
 
 * [Mailchimp](http://mailchimp.com) integration
-* Completely re-designed person record interface.
-* Memberships
 * Flex-passes
 
 # About
@@ -119,17 +125,13 @@ Additionally these are defaulted in the config.ru and config/unicorn.rb files bu
 
 ### About delayed_job
 
-Artful.ly OSE ships with `delayed_job` disabled.  If you do have a Heroku worker turned on, you'll want to enable delayed_jobs.
+Prior to 1.2, Artful.ly OSE shipped with `delayed_job` disabled. 
 
-To enable `delayed_job`, in `config/application.rb` change this line to read
-
-    Delayed::Worker.delay_jobs = true
-    
-__Please note__ that Artful.ly OSE depends on delayed jobs for locking tickets while a patron is checking out.  Leaving delayed jobs disabled prevents tickets from being locked.  Checkout will still work, but tickets will not be reserved for a patron while he/she is checking out.
+With the 1.2 release __A worker is required to run Artfully OSE__. This is because our ticket locking strategy changed to accommodate multiple prices per ticket.
 
 ### Sending email
 
-Artful.ly will not send confirmation emails to customers without a valid SMTP setup
+__Artful.ly will not send confirmation emails to customers without a valid SMTP setup__
 
 A good option is to enable SendGrid.  SendGrid has a free usage tier which integrates with Heroku.  See the note in `Setup SendGrid` to enable SendGrid.  Artful.ly OSE will work with SendGrid without any modification necessary.
 
