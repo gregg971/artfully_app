@@ -24,4 +24,4 @@ end
 #This points to edge.  For stable, use a published gem https://rubygems.org/gems/artfully_ose
 #gem 'artfully_ose', :git => 'git://github.com/fracturedatlas/artfully_ose.git'
 
-gem 'artfully_ose', "1.2.0.pre"
+gem 'artfully_ose', "1.2.0.pre.1"
