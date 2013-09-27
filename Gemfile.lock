@@ -16,7 +16,7 @@ GEM
       sprockets (~> 2.2.1)
     active_model_serializers (0.6.0)
       activemodel (>= 3.0)
-    active_utils (2.0.0)
+    active_utils (2.0.1)
       activesupport (>= 2.3.11)
       i18n
     activemerchant (1.38.1)
@@ -48,7 +48,7 @@ GEM
       rails (~> 3.0)
     angularjs-rails (1.0.7)
     arel (3.0.2)
-    artfully_ose (1.2.0.pre.3)
+    artfully_ose (1.2.0.pre.4)
       active_model_serializers (= 0.6.0)
       activemerchant
       activerecord-import (= 0.2.9)
@@ -102,7 +102,7 @@ GEM
     cancan (1.6.7)
     climate_control (0.0.3)
       activesupport (>= 3.0)
-    cocaine (0.5.1)
+    cocaine (0.5.2)
       climate_control (>= 0.0.3, < 1.0)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -267,7 +267,7 @@ PLATFORMS
 
 DEPENDENCIES
   angularjs-rails
-  artfully_ose (= 1.2.0.pre.3)
+  artfully_ose (= 1.2.0.pre.4)
   coffee-rails (~> 3.2.1)
   exceptional (= 2.0.33)
   jquery-rails
