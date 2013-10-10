@@ -48,7 +48,7 @@ GEM
       rails (~> 3.0)
     angularjs-rails (1.0.7)
     arel (3.0.2)
-    artfully_ose (1.2.0.pre.5)
+    artfully_ose (1.2.0.pre.6)
       active_model_serializers (= 0.6.0)
       activemerchant
       activerecord-import (= 0.2.9)
@@ -266,7 +266,7 @@ PLATFORMS
 
 DEPENDENCIES
   angularjs-rails
-  artfully_ose (= 1.2.0.pre.5)
+  artfully_ose (= 1.2.0.pre.6)
   coffee-rails (~> 3.2.1)
   exceptional (= 2.0.33)
   jquery-rails

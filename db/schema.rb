@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130917165948) do
+ActiveRecord::Schema.define(:version => 20131007150717) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -290,25 +290,28 @@ ActiveRecord::Schema.define(:version => 20130917165948) do
   end
 
   create_table "members", :force => true do |t|
-    t.string   "email",                                :default => "", :null => false
-    t.string   "encrypted_password",                   :default => ""
+    t.string   "email",                                   :default => "", :null => false
+    t.string   "encrypted_password",                      :default => ""
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                        :default => 0
+    t.integer  "sign_in_count",                           :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "invitation_token",       :limit => 60
+    t.string   "invitation_token",          :limit => 60
     t.datetime "invitation_sent_at"
     t.datetime "suspended_at"
     t.string   "suspension_reason"
     t.integer  "organization_id"
     t.integer  "person_id"
-    t.datetime "created_at",                                           :null => false
-    t.datetime "updated_at",                                           :null => false
-    t.string   "member_number",                                        :null => false
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
+    t.string   "member_number",                                           :null => false
+    t.integer  "current_memberships_count",               :default => 0
+    t.integer  "lapsed_memberships_count",                :default => 0
+    t.integer  "past_memberships_count",                  :default => 0
   end
 
   add_index "members", ["email"], :name => "index_members_on_email", :unique => true
@@ -336,7 +339,6 @@ ActiveRecord::Schema.define(:version => 20130917165948) do
   create_table "memberships", :force => true do |t|
     t.integer  "organization_id"
     t.integer  "membership_type_id"
-    t.datetime "expires_at"
     t.integer  "member_id"
     t.integer  "cart_id"
     t.integer  "price"
@@ -404,6 +406,11 @@ ActiveRecord::Schema.define(:version => 20130917165948) do
     t.boolean  "receive_daily_sales_report", :default => true, :null => false
     t.string   "cached_slug"
     t.integer  "last_member_number",         :default => 0
+    t.string   "country"
+    t.string   "zip"
+    t.string   "state"
+    t.string   "phone_number"
+    t.string   "discipline"
   end
 
   add_index "organizations", ["cached_slug"], :name => "index_organizations_on_cached_slug"
@@ -494,6 +501,22 @@ ActiveRecord::Schema.define(:version => 20130917165948) do
 
   add_index "segments", ["organization_id"], :name => "index_segments_on_organization_id"
   add_index "segments", ["search_id"], :name => "index_segments_on_search_id"
+
+  create_table "show_stats_view", :id => false, :force => true do |t|
+    t.integer  "id",                                                          :default => 0, :null => false
+    t.integer  "show_id",                                                     :default => 0, :null => false
+    t.integer  "event_id"
+    t.integer  "organization_id"
+    t.datetime "datetime"
+    t.string   "state"
+    t.integer  "capacity",        :limit => 8,                                :default => 0, :null => false
+    t.string   "time_zone"
+    t.decimal  "sold",                         :precision => 23, :scale => 0
+    t.decimal  "comped",                       :precision => 23, :scale => 0
+    t.decimal  "on_sale",                      :precision => 23, :scale => 0
+    t.decimal  "off_sale",                     :precision => 23, :scale => 0
+    t.decimal  "open",                         :precision => 23, :scale => 0
+  end
 
   create_table "shows", :force => true do |t|
     t.string   "state"
@@ -606,6 +629,8 @@ ActiveRecord::Schema.define(:version => 20130917165948) do
     t.boolean  "newsletter_emails",                     :default => true, :null => false
     t.string   "mailchimp_message"
     t.datetime "reset_password_sent_at"
+    t.string   "first_name"
+    t.string   "last_name"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
