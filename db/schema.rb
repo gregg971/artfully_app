@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131007150717) do
+ActiveRecord::Schema.define(:version => 20131013193508) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -324,7 +324,7 @@ ActiveRecord::Schema.define(:version => 20131007150717) do
     t.string   "name"
     t.integer  "price"
     t.integer  "fee"
-    t.integer  "number_of_shows"
+    t.integer  "number_of_tickets"
     t.string   "plan"
     t.boolean  "on_sale"
     t.datetime "starts_at"
@@ -332,8 +332,11 @@ ActiveRecord::Schema.define(:version => 20131007150717) do
     t.integer  "segment_id"
     t.integer  "organization_id"
     t.text     "description"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
+    t.string   "type",              :default => "SeasonalMembershipType"
+    t.integer  "duration"
+    t.integer  "period"
   end
 
   create_table "memberships", :force => true do |t|
@@ -456,7 +459,7 @@ ActiveRecord::Schema.define(:version => 20131007150717) do
   end
 
   create_table "searches", :force => true do |t|
-    t.integer  "organization_id",      :null => false
+    t.integer  "organization_id",                        :null => false
     t.string   "zip"
     t.string   "state"
     t.integer  "event_id"
@@ -467,8 +470,8 @@ ActiveRecord::Schema.define(:version => 20131007150717) do
     t.datetime "min_donations_date"
     t.datetime "max_donations_date"
     t.string   "tagging"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.string   "discount_code"
     t.string   "person_type"
     t.string   "person_subtype"
@@ -477,6 +480,7 @@ ActiveRecord::Schema.define(:version => 20131007150717) do
     t.datetime "membership_starts_at"
     t.datetime "membership_ends_at"
     t.integer  "year"
+    t.boolean  "has_purchased_for",    :default => true
   end
 
   add_index "searches", ["organization_id"], :name => "index_searches_on_organization_id"

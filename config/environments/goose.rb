@@ -12,13 +12,19 @@ ArtfullyApp::Application.configure do
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
-  
+
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default_url_options = { :host => 'localhost:5000' }
-  config.action_mailer.asset_host =  "http://localhost:5000"
-  config.action_mailer.delivery_method = :letter_opener
 
+  config.action_mailer.smtp_settings = {
+    :address              => "smtp.stagingmail.com",
+    :port                 => 10587,
+    :authentication       => :plain,
+    :user_name            => ENV['SENDGRID_USERNAME'],
+    :password             => ENV['SENDGRID_PASSWORD'],
+    :enable_starttls_auto => true
+  }
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
