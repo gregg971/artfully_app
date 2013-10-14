@@ -16,9 +16,6 @@ config/database.yml
 # Ignore solr
 /solr
 
-# Ignore migrations that have been copied in from the engine.
-/db/migrate/*.artfully_ose_engine.rb
-
 # Ignore local rvmrc file. Use your own Ruby.
 .rvmrc
 
