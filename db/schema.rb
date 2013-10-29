@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131013193508) do
+ActiveRecord::Schema.define(:version => 20131029174007) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -332,11 +332,13 @@ ActiveRecord::Schema.define(:version => 20131013193508) do
     t.integer  "segment_id"
     t.integer  "organization_id"
     t.text     "description"
-    t.datetime "created_at",                                              :null => false
-    t.datetime "updated_at",                                              :null => false
-    t.string   "type",              :default => "SeasonalMembershipType"
+    t.datetime "created_at",                                                            :null => false
+    t.datetime "updated_at",                                                            :null => false
+    t.string   "type",                            :default => "SeasonalMembershipType"
     t.integer  "duration"
-    t.integer  "period"
+    t.string   "period",            :limit => 11
+    t.datetime "sales_start_at"
+    t.datetime "sales_end_at"
   end
 
   create_table "memberships", :force => true do |t|
@@ -609,6 +611,7 @@ ActiveRecord::Schema.define(:version => 20131013193508) do
   create_table "user_memberships", :force => true do |t|
     t.integer "user_id"
     t.integer "organization_id"
+    t.boolean "owner",           :default => false
   end
 
   create_table "users", :force => true do |t|
