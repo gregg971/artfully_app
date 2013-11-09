@@ -13,12 +13,12 @@ An Open-source application to run your arts organization.  Features include:
 * Box office for in-person sales
 * Advanced patron searching
 
-And coming soon...
+And coming soon in 1.2.0...
 
 * [Mailchimp](http://mailchimp.com) integration
-* Completely re-designed person record interface.
+* Completely re-designed person record.
+* New Storefront
 * Memberships
-* Flex-passes
 
 # About
 
