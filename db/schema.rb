@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131029174007) do
+ActiveRecord::Schema.define(:version => 20131126154155) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -392,6 +392,10 @@ ActiveRecord::Schema.define(:version => 20131029174007) do
     t.datetime "deleted_at"
     t.text     "notes"
     t.datetime "revenue_applies_at",   :default => '2013-07-23 01:43:27', :null => false
+    t.string   "pdf_file_name"
+    t.string   "pdf_content_type"
+    t.integer  "pdf_file_size"
+    t.datetime "pdf_updated_at"
   end
 
   add_index "orders", ["created_at"], :name => "index_orders_on_created_at"
@@ -595,9 +599,14 @@ ActiveRecord::Schema.define(:version => 20131029174007) do
     t.integer  "cart_price"
     t.integer  "discount_id"
     t.integer  "ticket_type_id"
-    t.boolean  "validated",           :default => false
+    t.boolean  "validated",            :default => false
     t.integer  "validated_action_id"
-    t.integer  "service_fee",         :default => 0
+    t.integer  "service_fee",          :default => 0
+    t.string   "qr_code_file_name"
+    t.string   "qr_code_content_type"
+    t.integer  "qr_code_file_size"
+    t.datetime "qr_code_updated_at"
+    t.string   "uuid",                                    :null => false
   end
 
   add_index "tickets", ["cart_id"], :name => "index_tickets_on_cart_id"
@@ -607,6 +616,7 @@ ActiveRecord::Schema.define(:version => 20131029174007) do
   add_index "tickets", ["show_id"], :name => "index_tickets_on_show_id"
   add_index "tickets", ["state"], :name => "index_tickets_on_state"
   add_index "tickets", ["ticket_type_id"], :name => "index_tickets_on_ticket_type_id"
+  add_index "tickets", ["uuid"], :name => "index_tickets_on_uuid", :unique => true
 
   create_table "user_memberships", :force => true do |t|
     t.integer "user_id"
@@ -638,6 +648,7 @@ ActiveRecord::Schema.define(:version => 20131029174007) do
     t.datetime "reset_password_sent_at"
     t.string   "first_name"
     t.string   "last_name"
+    t.string   "authentication_token"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
