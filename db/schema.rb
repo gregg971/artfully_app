@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131126154155) do
+ActiveRecord::Schema.define(:version => 20131127164130) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -571,18 +571,23 @@ ActiveRecord::Schema.define(:version => 20131126154155) do
   end
 
   create_table "ticket_types", :force => true do |t|
-    t.integer  "section_id",                    :null => false
+    t.integer  "section_id",                                :null => false
     t.integer  "show_id"
-    t.string   "name",                          :null => false
-    t.integer  "price",                         :null => false
+    t.string   "name",                                      :null => false
+    t.integer  "price",                                     :null => false
     t.integer  "limit"
-    t.boolean  "storefront",  :default => true, :null => false
-    t.boolean  "box_office",  :default => true, :null => false
-    t.boolean  "members",     :default => true, :null => false
+    t.boolean  "storefront",             :default => true,  :null => false
+    t.boolean  "box_office",             :default => true,  :null => false
+    t.boolean  "members",                :default => true,  :null => false
     t.text     "description"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+    t.integer  "membership_type_id"
+    t.integer  "tickets_per_membership"
+    t.boolean  "member_ticket",          :default => false
   end
+
+  add_index "ticket_types", ["membership_type_id"], :name => "index_ticket_types_on_membership_type_id"
 
   create_table "tickets", :force => true do |t|
     t.string   "venue"
@@ -609,6 +614,7 @@ ActiveRecord::Schema.define(:version => 20131126154155) do
     t.string   "uuid",                                    :null => false
   end
 
+  add_index "tickets", ["buyer_id"], :name => "index_tickets_on_buyer_id"
   add_index "tickets", ["cart_id"], :name => "index_tickets_on_cart_id"
   add_index "tickets", ["discount_id"], :name => "index_tickets_on_discount_id"
   add_index "tickets", ["organization_id"], :name => "index_tickets_on_organization_id"
