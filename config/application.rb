@@ -60,9 +60,6 @@ module ArtfullyApp
       config.s3.access_key_id         = ENV['S3_ACCESS_KEY_ID']        || 'your_access_key_id'
       config.s3.secret_access_key     = ENV['S3_SECRET_ACCESS_KEY']    || 'your_secret'
 
-      config.payment_model_paths      += Dir["#{Rails.root}/app/models/payments/*.rb"]
-      config.discount_type_paths      += Dir["#{Rails.root}/app/models/discounts/*.rb"]
-
       #d2s3 config 
       D2S3::S3Config.load_config
     end
