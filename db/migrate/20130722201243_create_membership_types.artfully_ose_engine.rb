@@ -13,6 +13,7 @@ class CreateMembershipTypes < ActiveRecord::Migration
       t.belongs_to  :segment
       t.belongs_to :organization
       t.text        :description
+      t.integer     :segment_id
       t.timestamps
     end
   end
