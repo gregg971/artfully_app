@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131210222906) do
+ActiveRecord::Schema.define(:version => 20140205172635) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -312,6 +312,15 @@ ActiveRecord::Schema.define(:version => 20131210222906) do
     t.integer  "current_memberships_count",               :default => 0
     t.integer  "lapsed_memberships_count",                :default => 0
     t.integer  "past_memberships_count",                  :default => 0
+    t.string   "pdf_file_name"
+    t.string   "pdf_content_type"
+    t.integer  "pdf_file_size"
+    t.datetime "pdf_updated_at"
+    t.string   "uuid"
+    t.string   "qr_code_file_name"
+    t.string   "qr_code_content_type"
+    t.integer  "qr_code_file_size"
+    t.datetime "qr_code_updated_at"
   end
 
   add_index "members", ["email"], :name => "index_members_on_email", :unique => true
@@ -319,6 +328,7 @@ ActiveRecord::Schema.define(:version => 20131210222906) do
   add_index "members", ["organization_id"], :name => "index_members_on_organization_id"
   add_index "members", ["person_id"], :name => "index_members_on_person_id"
   add_index "members", ["reset_password_token"], :name => "index_members_on_reset_password_token", :unique => true
+  add_index "members", ["uuid"], :name => "index_members_on_uuid", :unique => true
 
   create_table "membership_types", :force => true do |t|
     t.string   "name"
@@ -346,6 +356,8 @@ ActiveRecord::Schema.define(:version => 20131210222906) do
     t.boolean  "offer_renewal",                            :default => false
   end
 
+  add_index "membership_types", ["organization_id"], :name => "index_membership_types_on_organization_id"
+
   create_table "memberships", :force => true do |t|
     t.integer  "organization_id"
     t.integer  "membership_type_id"
@@ -355,12 +367,15 @@ ActiveRecord::Schema.define(:version => 20131210222906) do
     t.integer  "sold_price"
     t.datetime "starts_at"
     t.datetime "ends_at"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
     t.integer  "service_fee",        :default => 0
+    t.text     "welcome_message"
+    t.boolean  "send_email",         :default => true
   end
 
   add_index "memberships", ["member_id"], :name => "index_memberships_on_member_id"
+  add_index "memberships", ["membership_type_id"], :name => "index_memberships_on_membership_type_id"
   add_index "memberships", ["organization_id"], :name => "index_memberships_on_organization_id"
 
   create_table "notes", :force => true do |t|
