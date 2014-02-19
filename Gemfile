@@ -26,4 +26,4 @@ end
 # gem 'artfully_ose', :git => 'git://github.com/fracturedatlas/artfully_ose.git'
 # gem 'artfully_ose', :path => '../artful.ly/lib/artfully_ose'
 
-gem 'artfully_ose', "1.2.0.pre.19"
+gem 'artfully_ose', "1.2.0.pre.21"
