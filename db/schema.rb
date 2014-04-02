@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140205172635) do
+ActiveRecord::Schema.define(:version => 20140402111169) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(:version => 20140205172635) do
     t.integer  "discount_id"
     t.string   "token"
     t.string   "reseller_id"
+    t.integer  "applied_pass_id"
   end
 
   add_index "carts", ["token"], :name => "index_carts_on_token", :unique => true
@@ -167,6 +168,16 @@ ActiveRecord::Schema.define(:version => 20140205172635) do
   add_index "events", ["uuid"], :name => "index_events_on_uuid"
   add_index "events", ["venue_id"], :name => "index_events_on_venue_id"
 
+  create_table "events_pass_types", :force => true do |t|
+    t.integer  "organization_id"
+    t.integer  "event_id"
+    t.integer  "pass_type_id"
+    t.text     "ticket_types"
+    t.text     "excluded_shows"
+    t.datetime "deleted_at"
+    t.boolean  "active",          :default => true
+  end
+
   create_table "gateway_transactions", :force => true do |t|
     t.string   "transaction_id"
     t.boolean  "success"
@@ -244,6 +255,7 @@ ActiveRecord::Schema.define(:version => 20140205172635) do
     t.integer  "discount_id"
     t.integer  "original_price"
     t.integer  "service_fee",     :default => 0
+    t.integer  "pass_id"
   end
 
   add_index "items", ["created_at"], :name => "index_items_on_created_at"
@@ -262,14 +274,6 @@ ActiveRecord::Schema.define(:version => 20140205172635) do
     t.datetime "created_at"
     t.string   "payment_method"
     t.integer  "person_id",            :default => 0
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "email"
-    t.string   "address1"
-    t.string   "address2"
-    t.string   "city"
-    t.string   "state"
-    t.string   "zip"
     t.datetime "datetime"
     t.integer  "show_id",              :default => 0
     t.integer  "event_id",             :default => 0
@@ -367,11 +371,14 @@ ActiveRecord::Schema.define(:version => 20140205172635) do
     t.integer  "sold_price"
     t.datetime "starts_at"
     t.datetime "ends_at"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
-    t.integer  "service_fee",        :default => 0
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
+    t.integer  "service_fee",           :default => 0
     t.text     "welcome_message"
-    t.boolean  "send_email",         :default => true
+    t.boolean  "send_email",            :default => true
+    t.integer  "cart_price"
+    t.integer  "total_paid"
+    t.integer  "changed_membership_id"
   end
 
   add_index "memberships", ["member_id"], :name => "index_memberships_on_member_id"
@@ -444,6 +451,46 @@ ActiveRecord::Schema.define(:version => 20140205172635) do
 
   add_index "organizations", ["cached_slug"], :name => "index_organizations_on_cached_slug"
 
+  create_table "pass_types", :force => true do |t|
+    t.integer  "organization_id"
+    t.integer  "segment_id"
+    t.string   "name"
+    t.integer  "price"
+    t.datetime "starts_at"
+    t.datetime "ends_at"
+    t.datetime "sales_start_at"
+    t.datetime "sales_end_at"
+    t.boolean  "on_sale"
+    t.integer  "tickets_allowed"
+    t.boolean  "hide_fee"
+    t.text     "description"
+    t.text     "thanks_copy"
+  end
+
+  add_index "pass_types", ["organization_id"], :name => "index_pass_types_on_organization_id"
+
+  create_table "passes", :force => true do |t|
+    t.integer  "organization_id"
+    t.integer  "person_id"
+    t.integer  "cart_id"
+    t.integer  "pass_type_id"
+    t.string   "pass_code"
+    t.integer  "price"
+    t.integer  "sold_price"
+    t.datetime "starts_at"
+    t.datetime "ends_at"
+    t.integer  "service_fee"
+    t.boolean  "send_email"
+    t.integer  "tickets_allowed"
+    t.integer  "tickets_purchased"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "passes", ["organization_id"], :name => "index_passes_on_organization_id"
+  add_index "passes", ["pass_type_id"], :name => "index_passes_on_pass_type_id"
+  add_index "passes", ["person_id"], :name => "index_passes_on_person_id"
+
   create_table "people", :force => true do |t|
     t.integer  "organization_id"
     t.string   "state"
@@ -507,6 +554,9 @@ ActiveRecord::Schema.define(:version => 20140205172635) do
     t.datetime "membership_ends_at"
     t.integer  "year"
     t.boolean  "has_purchased_for",    :default => true
+    t.datetime "show_date_start"
+    t.datetime "show_date_end"
+    t.integer  "pass_type_id"
   end
 
   add_index "searches", ["organization_id"], :name => "index_searches_on_organization_id"
@@ -555,6 +605,7 @@ ActiveRecord::Schema.define(:version => 20140205172635) do
     t.integer  "chart_id"
     t.integer  "organization_id"
     t.string   "uuid"
+    t.text     "cached_stats"
   end
 
   add_index "shows", ["event_id"], :name => "index_shows_on_event_id"
@@ -632,6 +683,7 @@ ActiveRecord::Schema.define(:version => 20140205172635) do
     t.integer  "qr_code_file_size"
     t.datetime "qr_code_updated_at"
     t.string   "uuid",                                    :null => false
+    t.integer  "pass_id"
   end
 
   add_index "tickets", ["buyer_id"], :name => "index_tickets_on_buyer_id"
