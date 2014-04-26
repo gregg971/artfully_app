@@ -10,6 +10,8 @@ group :assets do
   gem 'angularjs-rails'
 end
 
+gem 'font-awesome-sass', '~> 4.0.3.1'
+
 gem 'jquery-rails'
 gem 'unicorn', '~> 4.6.2' # web server
 gem 'unicorn-worker-killer'
@@ -24,6 +26,6 @@ end
 
 #This points to edge.  For stable, use a published gem https://rubygems.org/gems/artfully_ose
 # gem 'artfully_ose', :git => 'git://github.com/fracturedatlas/artfully_ose.git'
-# gem 'artfully_ose', :path => '../artful.ly/lib/artfully_ose'
+gem 'artfully_ose', :path => '../artful.ly/lib/artfully_ose'
 
-gem 'artfully_ose', "1.2.0.pre.23"
+# gem 'artfully_ose', "1.2.0.pre.23"

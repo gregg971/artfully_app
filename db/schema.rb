@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140402111169) do
+ActiveRecord::Schema.define(:version => 20140426175314) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(:version => 20140402111169) do
     t.integer  "person_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "household_id"
   end
 
   add_index "addresses", ["person_id"], :name => "index_addresses_on_person_id"
@@ -163,6 +164,7 @@ ActiveRecord::Schema.define(:version => 20140402111169) do
     t.string   "primary_category"
     t.text     "secondary_categories"
     t.boolean  "members_only",                 :default => false
+    t.text     "cached_stats"
   end
 
   add_index "events", ["uuid"], :name => "index_events_on_uuid"
@@ -190,6 +192,15 @@ ActiveRecord::Schema.define(:version => 20140402111169) do
   end
 
   add_index "gateway_transactions", ["transaction_id"], :name => "index_gateway_transactions_on_transaction_id"
+
+  create_table "households", :force => true do |t|
+    t.string   "name"
+    t.integer  "organization_id"
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+    t.boolean  "shared_address",             :default => true
+    t.boolean  "overwrite_member_addresses", :default => true, :null => false
+  end
 
   create_table "import_errors", :force => true do |t|
     t.integer  "import_id"
@@ -465,6 +476,7 @@ ActiveRecord::Schema.define(:version => 20140402111169) do
     t.boolean  "hide_fee"
     t.text     "description"
     t.text     "thanks_copy"
+    t.text     "email_copy"
   end
 
   add_index "pass_types", ["organization_id"], :name => "index_pass_types_on_organization_id"
@@ -518,6 +530,7 @@ ActiveRecord::Schema.define(:version => 20140402111169) do
     t.string   "middle_name"
     t.string   "suffix"
     t.integer  "lifetime_ticket_value", :default => 0
+    t.integer  "household_id"
   end
 
   add_index "people", ["organization_id", "email"], :name => "index_people_on_organization_id_and_email"
@@ -529,6 +542,27 @@ ActiveRecord::Schema.define(:version => 20140402111169) do
     t.integer  "person_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "relations", :force => true do |t|
+    t.string   "description"
+    t.boolean  "person_can_be_individual", :default => false
+    t.boolean  "person_can_be_company",    :default => false
+    t.boolean  "other_can_be_individual",  :default => false
+    t.boolean  "other_can_be_company",     :default => false
+    t.integer  "inverse_id"
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
+  end
+
+  create_table "relationships", :force => true do |t|
+    t.integer  "person_id",                      :null => false
+    t.integer  "relation_id",                    :null => false
+    t.integer  "other_id",                       :null => false
+    t.integer  "inverse_id"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+    t.boolean  "starred",     :default => false
   end
 
   create_table "searches", :force => true do |t|
@@ -546,7 +580,6 @@ ActiveRecord::Schema.define(:version => 20140402111169) do
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.string   "discount_code"
-    t.string   "person_type"
     t.string   "person_subtype"
     t.integer  "membership_type_id"
     t.string   "membership_status"
@@ -557,6 +590,10 @@ ActiveRecord::Schema.define(:version => 20140402111169) do
     t.datetime "show_date_start"
     t.datetime "show_date_end"
     t.integer  "pass_type_id"
+    t.integer  "relation_id"
+    t.boolean  "output_individuals",   :default => true
+    t.boolean  "output_households",    :default => true
+    t.boolean  "output_companies",     :default => true
   end
 
   add_index "searches", ["organization_id"], :name => "index_searches_on_organization_id"
@@ -623,6 +660,13 @@ ActiveRecord::Schema.define(:version => 20140402111169) do
   add_index "slugs", ["scope", "record_id"], :name => "index_slugs_on_scope_and_record_id"
   add_index "slugs", ["scope", "slug", "created_at"], :name => "index_slugs_on_scope_and_slug_and_created_at"
   add_index "slugs", ["scope", "slug"], :name => "index_slugs_on_scope_and_slug"
+
+  create_table "suggested_households", :force => true do |t|
+    t.string   "ids",                           :null => false
+    t.boolean  "ignored",    :default => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"
