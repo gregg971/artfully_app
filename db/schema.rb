@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140426175314) do
+ActiveRecord::Schema.define(:version => 20140529151436) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -178,6 +178,7 @@ ActiveRecord::Schema.define(:version => 20140426175314) do
     t.text     "excluded_shows"
     t.datetime "deleted_at"
     t.boolean  "active",          :default => true
+    t.integer  "limit_per_pass"
   end
 
   create_table "gateway_transactions", :force => true do |t|
@@ -369,6 +370,7 @@ ActiveRecord::Schema.define(:version => 20140426175314) do
     t.boolean  "hide_fee",                                 :default => false
     t.integer  "renewal_price",                            :default => 0
     t.boolean  "offer_renewal",                            :default => false
+    t.integer  "limit_per_transaction",                    :default => 1
   end
 
   add_index "membership_types", ["organization_id"], :name => "index_membership_types_on_organization_id"
@@ -477,6 +479,7 @@ ActiveRecord::Schema.define(:version => 20140426175314) do
     t.text     "description"
     t.text     "thanks_copy"
     t.text     "email_copy"
+    t.datetime "deleted_at"
   end
 
   add_index "pass_types", ["organization_id"], :name => "index_pass_types_on_organization_id"
@@ -494,9 +497,8 @@ ActiveRecord::Schema.define(:version => 20140426175314) do
     t.integer  "service_fee"
     t.boolean  "send_email"
     t.integer  "tickets_allowed"
-    t.integer  "tickets_purchased"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   add_index "passes", ["organization_id"], :name => "index_passes_on_organization_id"
@@ -531,6 +533,7 @@ ActiveRecord::Schema.define(:version => 20140426175314) do
     t.string   "suffix"
     t.integer  "lifetime_ticket_value", :default => 0
     t.integer  "household_id"
+    t.integer  "lifetime_memberships",  :default => 0
   end
 
   add_index "people", ["organization_id", "email"], :name => "index_people_on_organization_id_and_email"
@@ -566,7 +569,7 @@ ActiveRecord::Schema.define(:version => 20140426175314) do
   end
 
   create_table "searches", :force => true do |t|
-    t.integer  "organization_id",                        :null => false
+    t.integer  "organization_id",                             :null => false
     t.string   "zip"
     t.string   "state"
     t.integer  "event_id"
@@ -577,8 +580,8 @@ ActiveRecord::Schema.define(:version => 20140426175314) do
     t.datetime "min_donations_date"
     t.datetime "max_donations_date"
     t.string   "tagging"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
     t.string   "discount_code"
     t.string   "person_subtype"
     t.integer  "membership_type_id"
@@ -586,14 +589,18 @@ ActiveRecord::Schema.define(:version => 20140426175314) do
     t.datetime "membership_starts_at"
     t.datetime "membership_ends_at"
     t.integer  "year"
-    t.boolean  "has_purchased_for",    :default => true
+    t.boolean  "has_purchased_for",         :default => true
     t.datetime "show_date_start"
     t.datetime "show_date_end"
     t.integer  "pass_type_id"
     t.integer  "relation_id"
-    t.boolean  "output_individuals",   :default => true
-    t.boolean  "output_households",    :default => true
-    t.boolean  "output_companies",     :default => true
+    t.boolean  "output_individuals",        :default => true
+    t.boolean  "output_households",         :default => true
+    t.boolean  "output_companies",          :default => true
+    t.datetime "min_membership_start_date"
+    t.datetime "max_membership_start_date"
+    t.datetime "min_membership_end_date"
+    t.datetime "max_membership_end_date"
   end
 
   add_index "searches", ["organization_id"], :name => "index_searches_on_organization_id"
@@ -618,22 +625,6 @@ ActiveRecord::Schema.define(:version => 20140426175314) do
 
   add_index "segments", ["organization_id"], :name => "index_segments_on_organization_id"
   add_index "segments", ["search_id"], :name => "index_segments_on_search_id"
-
-  create_table "show_stats_view", :id => false, :force => true do |t|
-    t.integer  "id",                                                          :default => 0, :null => false
-    t.integer  "show_id",                                                     :default => 0, :null => false
-    t.integer  "event_id"
-    t.integer  "organization_id"
-    t.datetime "datetime"
-    t.string   "state"
-    t.integer  "capacity",        :limit => 8,                                :default => 0, :null => false
-    t.string   "time_zone"
-    t.decimal  "sold",                         :precision => 23, :scale => 0
-    t.decimal  "comped",                       :precision => 23, :scale => 0
-    t.decimal  "on_sale",                      :precision => 23, :scale => 0
-    t.decimal  "off_sale",                     :precision => 23, :scale => 0
-    t.decimal  "open",                         :precision => 23, :scale => 0
-  end
 
   create_table "shows", :force => true do |t|
     t.string   "state"
