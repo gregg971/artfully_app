@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140529151436) do
+ActiveRecord::Schema.define(:version => 20140724135328) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -273,6 +273,9 @@ ActiveRecord::Schema.define(:version => 20140529151436) do
   add_index "items", ["created_at"], :name => "index_items_on_created_at"
   add_index "items", ["discount_id"], :name => "index_items_on_discount_id"
   add_index "items", ["order_id"], :name => "index_items_on_order_id"
+  add_index "items", ["product_id", "product_type"], :name => "index_items_on_product_id_and_product_type"
+  add_index "items", ["product_id"], :name => "index_items_on_product_id"
+  add_index "items", ["product_type"], :name => "index_items_on_product_type"
   add_index "items", ["show_id"], :name => "index_items_on_show_id"
 
   create_table "items_view", :id => false, :force => true do |t|
@@ -436,6 +439,7 @@ ActiveRecord::Schema.define(:version => 20140529151436) do
     t.string   "pdf_content_type"
     t.integer  "pdf_file_size"
     t.datetime "pdf_updated_at"
+    t.string   "check_number"
   end
 
   add_index "orders", ["created_at"], :name => "index_orders_on_created_at"
@@ -534,6 +538,10 @@ ActiveRecord::Schema.define(:version => 20140529151436) do
     t.integer  "lifetime_ticket_value", :default => 0
     t.integer  "household_id"
     t.integer  "lifetime_memberships",  :default => 0
+    t.integer  "birth_day"
+    t.integer  "birth_month"
+    t.integer  "birth_year"
+    t.boolean  "do_not_call",           :default => false
   end
 
   add_index "people", ["organization_id", "email"], :name => "index_people_on_organization_id_and_email"
