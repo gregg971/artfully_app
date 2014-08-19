@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140724135328) do
+ActiveRecord::Schema.define(:version => 20140819204149) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -165,6 +165,7 @@ ActiveRecord::Schema.define(:version => 20140724135328) do
     t.text     "secondary_categories"
     t.boolean  "members_only",                 :default => false
     t.text     "cached_stats"
+    t.string   "subtitle"
   end
 
   add_index "events", ["uuid"], :name => "index_events_on_uuid"
