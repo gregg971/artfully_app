@@ -18,6 +18,7 @@ gem 'unicorn-worker-killer'
 gem 'mysql2', '0.3.11'
 gem 'exceptional', "2.0.33"                               #exception notifications
 gem "wisepdf", "1.4.0"
+gem 'wkhtmltopdf-binary'
 
 group :development do
   gem 'sqlite3'
@@ -34,4 +35,4 @@ end
 # gem 'artfully_ose', :git => 'git://github.com/fracturedatlas/artfully_ose.git'
 # gem 'artfully_ose', :path => '../artful.ly/lib/artfully_ose'
 
-gem 'artfully_ose', "1.2.0.alpha.1"
+gem 'artfully_ose', "1.2.0.alpha.2"
