@@ -38,6 +38,24 @@ Creating your own Artful.ly OSE installation requires a basic understanding of G
 
 **If you don't know what any of that means** then you probably want our [hosted event ticketing version of Artful.ly](http://www.artful.ly)
 
+## A Note About Contributing
+
+Because of a variety of factors, we cannot accept pull requests on this repo. We're working to get this resolved.
+
+## New Install? Upgrading?
+
+If this is a new install, start in the Dependencies section. 
+
+If this is an upgrade from 1.1.0, back up your database (seriosuly, back up your database) and follow these instructions.
+
+    rake artfully_ose_engine:install:migrations
+    git commit -am "Upgrade to 1.2.0"
+
+Push to Heroku
+ 
+    heroku run rake:db:migrate
+    heroku restart
+
 ## Dependencies
 
 You'll need the following apps/services to use Artful.ly OSE
