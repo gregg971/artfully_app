@@ -19,3 +19,4 @@ config/database.yml
 # Ignore local rvmrc file. Use your own Ruby.
 .rvmrc
 
+config/environments/goose.rb
