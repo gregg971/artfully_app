@@ -38,10 +38,6 @@ Creating your own Artful.ly OSE installation requires a basic understanding of G
 
 **If you don't know what any of that means** then you probably want our [hosted event ticketing version of Artful.ly](http://www.artful.ly)
 
-## A Note About Contributing
-
-Because of a variety of factors, we cannot accept pull requests on this repo. We're working to get this resolved.
-
 ## New Install? Upgrading?
 
 If this is a new install, start in the Dependencies section. 
