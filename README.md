@@ -42,7 +42,7 @@ Creating your own Artful.ly OSE installation requires a basic understanding of G
 
 If this is a new install, start in the Dependencies section. 
 
-If this is an upgrade from 1.1.0, back up your database (seriosuly, back up your database) and follow these instructions.
+If this is an upgrade from 1.1.0, back up your database (seriously, back up your database) and follow these instructions.
 
     rake artfully_ose_engine:install:migrations
     git commit -am "Upgrade to 1.2.0"
