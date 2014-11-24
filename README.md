@@ -198,9 +198,11 @@ Before running this, you must have setup and configured a MySQL database.  If yo
     heroku addons:add amazon_rds
     heroku config:add DATABASE_URL=mysql2://username:password@url.ofyourdatabase.com/databaseName
 
-Otherwise, make sure you have edited, committed, and pushed your database.yml file
+Otherwise, make sure you have edited, committed, and pushed your database.yml file.
 
-    heroku run bundle exec rake db:schema:install
+Finally, run:
+
+    heroku run bundle exec rake db:schema:load
 
 ### Set environment variables
 
