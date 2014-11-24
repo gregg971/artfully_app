@@ -3,7 +3,10 @@
 ---
 development:
   ticket_fee: 0
+  contact_email: you@example.com
 test:
   ticket_fee: 0
+  contact_email: you@example.com
 production:
   ticket_fee: 0
+  contact_email: you@example.com

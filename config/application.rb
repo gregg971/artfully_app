@@ -64,6 +64,6 @@ module ArtfullyApp
       D2S3::S3Config.load_config
     end
     
-    Delayed::Worker.delay_jobs = false
+    Delayed::Worker.delay_jobs = true
   end
 end

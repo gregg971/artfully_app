@@ -1,6 +1,6 @@
 # Artful.ly Open Source Edition
 
-Version 1.1.0
+Version 1.2.0
 
 An Open-source application to run your arts organization.  Features include:
 
@@ -13,18 +13,44 @@ An Open-source application to run your arts organization.  Features include:
 * Box office for in-person sales
 * Advanced patron searching
 
-And coming soon in 1.2.0...
+New in 1.2
+
+* Completely re-designed person record interface.
+* Completely re-designed checkout, storefront, and box office.
+* Search for patrons by tag, ticket purchase, event attendance, membership status, donation amounts
+* Better ticket types and capacity management. Assign more than one price to a single ticket.
+* Memberships. Your organization can sell memberships in your store, offer events and tickets to members only, and provide a username and password to members.
+* Passes. Sell season tickets and subscriptions to your shows.
+* Generate a page for people to donate to your organization.
+
+Coming soon...
 
 * [Mailchimp](http://mailchimp.com) integration
-* Completely re-designed person record.
-* New Storefront
-* Memberships
+* Importing members
+* Relationships
+* Householding
+* Fundriaing campaign management
+* QR coded scannable tickets
 
 # About
 
 Creating your own Artful.ly OSE installation requires a basic understanding of Git, Heroku, Ruby and Rails.
 
 **If you don't know what any of that means** then you probably want our [hosted event ticketing version of Artful.ly](http://www.artful.ly)
+
+## New Install? Upgrading?
+
+If this is a new install, start in the Dependencies section. 
+
+If this is an upgrade from 1.1.0, back up your database (seriously, back up your database) and follow these instructions.
+
+    rake artfully_ose_engine:install:migrations
+    git commit -am "Upgrade to 1.2.0"
+
+Push to Heroku
+ 
+    heroku run rake:db:migrate
+    heroku restart
 
 ## Dependencies
 
@@ -74,10 +100,9 @@ Update database.yml to point to your mysql database.  Specify a local database a
 
     rake db:create:all
 
-Run the migrations
+Install the schema
 
-    rake artfully_ose_engine:install:migrations
-    rake db:migrate
+    rake db:schema:load
 
 ## Running Locally
 
@@ -121,17 +146,13 @@ Additionally these are defaulted in the config.ru and config/unicorn.rb files bu
 
 ### About delayed_job
 
-Artful.ly OSE ships with `delayed_job` disabled.  If you do have a Heroku worker turned on, you'll want to enable delayed_jobs.
+Prior to 1.2, Artful.ly OSE shipped with `delayed_job` disabled. 
 
-To enable `delayed_job`, in `config/application.rb` change this line to read
-
-    Delayed::Worker.delay_jobs = true
-    
-__Please note__ that Artful.ly OSE depends on delayed jobs for locking tickets while a patron is checking out.  Leaving delayed jobs disabled prevents tickets from being locked.  Checkout will still work, but tickets will not be reserved for a patron while he/she is checking out.
+With the 1.2 release __A worker is required to run Artfully OSE__. This is because our ticket locking strategy changed to accommodate multiple prices per ticket.
 
 ### Sending email
 
-Artful.ly OSE __WILL NOT PROCESS TRANSACTIONS WITHOUT A VALID SMTP SETUP__ We will make this more flexible in a future release.
+__Artful.ly will not send confirmation emails to customers without a valid SMTP setup__
 
 A good option is to enable SendGrid.  SendGrid has a free usage tier which integrates with Heroku.  See the note in `Setup SendGrid` to enable SendGrid.  Artful.ly OSE will work with SendGrid without any modification necessary.
 
@@ -162,6 +183,16 @@ If you're using SendGrid to send email, enable the starter plan with the followi
 
 See the [SendGrid documentation](https://addons.heroku.com/sendgrid) for more information.
 
+### Setup Daily Sales Email (Optional)
+
+Artful.ly can send a nightly email to the organization owner. To configure this, enable the heroku scheduler add-on
+
+    heroku addons:add scheduler
+
+Go to Heroku Scheduler Dashboard, Click "Add Job...", and enter "rake csv:sales". Set the frequency to "Daily" and set the time to a time that is convenient for you.
+
+For more information on Scheduler, see https://devcenter.heroku.com/articles/scheduler#scheduling-jobs
+
 ### Setup the production database
 
 Before running this, you must have setup and configured a MySQL database.  If you database is on Amazon's RDS, you'll have to enable that plugin on Heroku by running
@@ -169,11 +200,11 @@ Before running this, you must have setup and configured a MySQL database.  If yo
     heroku addons:add amazon_rds
     heroku config:add DATABASE_URL=mysql2://username:password@url.ofyourdatabase.com/databaseName
 
-Otherwise, make sure you have edited, committed, and pushed your database.yml file
+Otherwise, make sure you have edited, committed, and pushed your database.yml file.
 
-    heroku run bundle exec rake db:migrate
-    
-Please note that you must first have run and committed `bundle exec rake artfully_ose_engine:install:migrations` from the above steps
+Finally, run:
+
+    heroku run bundle exec rake db:schema:load
 
 ### Set environment variables
 
