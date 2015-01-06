@@ -96,6 +96,10 @@ All ongoing development happens in topic branches. Note this is different from t
 
 ## Database
 
+Copy database.yml.sample into a local copy
+
+    cp config/database.yml.sample config/database.yml
+
 Update database.yml to point to your mysql database.  Specify a local database and a production database. You can create your databases like so:
 
     rake db:create:all
