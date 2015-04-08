@@ -12,16 +12,18 @@ An Open-source application to run your arts organization.  Features include:
 * Door lists
 * Box office for in-person sales
 * Advanced patron searching
-
-New in 1.2
-
-* Completely re-designed person record interface.
-* Completely re-designed checkout, storefront, and box office.
 * Search for patrons by tag, ticket purchase, event attendance, membership status, donation amounts
-* Better ticket types and capacity management. Assign more than one price to a single ticket.
+* Assign more than one price to a single ticket.
 * Memberships. Your organization can sell memberships in your store, offer events and tickets to members only, and provide a username and password to members.
 * Passes. Sell season tickets and subscriptions to your shows.
 * Generate a page for people to donate to your organization.
+
+New in 1.3
+
+* Relationships
+* Householding
+* Fundriaing campaign management
+* QR coded scannable tickets
 
 Coming soon...
 
@@ -42,14 +44,15 @@ Creating your own Artful.ly OSE installation requires a basic understanding of G
 
 If this is a new install, start in the Dependencies section. 
 
-If this is an upgrade from 1.1.0, back up your database (seriously, back up your database) and follow these instructions.
+If this is an upgrade from 1.2.0, back up your database (seriously, back up your database) and follow these instructions.
 
     rake artfully_ose_engine:install:migrations
-    git commit -am "Upgrade to 1.2.0"
+    git commit -am "Upgrade to 1.3.0"
 
 Push to Heroku
  
-    heroku run rake:db:migrate
+    heroku run rake db:migrate
+    heroku run rake upgrade_1_3:create_donations
     heroku restart
 
 ## Dependencies
