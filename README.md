@@ -27,12 +27,10 @@ New in 1.3
 
 Coming soon...
 
+* Rails 4
+* Ruby 2.1
 * [Mailchimp](http://mailchimp.com) integration
 * Importing members
-* Relationships
-* Householding
-* Fundriaing campaign management
-* QR coded scannable tickets
 
 # About
 
