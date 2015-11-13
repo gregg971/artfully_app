@@ -1,0 +1,29 @@
+.row-fluid{:style => "margin-top: 100px"}
+  .span6.offset3
+    .well
+      .center
+        %h1="Hi"
+
+      %p
+        Thanks for setting up Artful.ly Open Source Edition!  
+
+      %p
+        Some new things we put in version 1.3:
+
+      %ul{:style => "margin-left: 20px; list-style-type: circle;"}
+        %li Relationships
+        %li Householding
+        %li Fundriaing campaign management
+        %li QR coded scannable tickets
+        %li Ruby 2.1
+        %li Mailchimp integration
+
+      %p
+        Before you can use all the new stuff, you'll need to setup your organization. Click the big green button to get started.
+
+      %p
+        =link_to "Set Up Your Organization Now", new_organization_path, :class => "btn btn-success btn-large btn-block"
+
+      %p
+        Find out more about Artful.ly Open Source Edition
+        =link_to "here", "https://www.artful.ly/opensource"
