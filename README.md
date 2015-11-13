@@ -24,12 +24,12 @@ New in 1.3
 * Householding
 * Fundriaing campaign management
 * QR coded scannable tickets
+* Ruby 2.1
+* [Mailchimp](http://mailchimp.com) integration
 
 Coming soon...
 
 * Rails 4
-* Ruby 2.1
-* [Mailchimp](http://mailchimp.com) integration
 * Importing members
 
 # About
@@ -66,13 +66,13 @@ You'll need the following apps/services to use Artful.ly OSE
 
 Make sure you have the following installed on your system
 
-* [Ruby](http://www.ruby-lang.org)
+* [Ruby 2.1](http://www.ruby-lang.org)
 * [Rubygems](http://docs.rubygems.org/read/chapter/3/)
-* [Rails 3.2](http://rubyonrails.org/)
+* [Rails 3.2.22](http://rubyonrails.org/)
 * [Heroku cli](https://github.com/heroku/heroku/)
 * [Git](http://git-scm.com/)
 
-Also, before you begin you should set up your production MySQL database.
+Also, before you begin you should create your production MySQL database.
 
 ## Clone the app 
 
