@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140819204149) do
+ActiveRecord::Schema.define(:version => 20151113155793) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -29,13 +29,19 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.integer  "creator_id"
     t.integer  "import_id"
     t.datetime "deleted_at"
+    t.boolean  "hide_on_recent_activity", :default => false
+    t.string   "external_reference"
   end
 
   add_index "actions", ["creator_id"], :name => "index_actions_on_creator_id"
+  add_index "actions", ["deleted_at"], :name => "index_actions_on_deleted_at"
   add_index "actions", ["import_id"], :name => "index_actions_on_import_id"
   add_index "actions", ["organization_id", "person_id"], :name => "index_actions_on_organization_id_and_person_id"
   add_index "actions", ["organization_id"], :name => "index_actions_on_organization_id"
   add_index "actions", ["person_id"], :name => "index_actions_on_person_id"
+  add_index "actions", ["subject_id"], :name => "index_actions_on_subject_id"
+  add_index "actions", ["subject_type"], :name => "index_actions_on_subject_type"
+  add_index "actions", ["type"], :name => "index_actions_on_type"
 
   create_table "addresses", :force => true do |t|
     t.string   "address1"
@@ -48,9 +54,66 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "household_id"
+    t.string   "kind",         :default => "Other"
+    t.boolean  "is_primary",   :default => true
   end
 
+  add_index "addresses", ["household_id"], :name => "index_addresses_on_household_id"
   add_index "addresses", ["person_id"], :name => "index_addresses_on_person_id"
+
+  create_table "advanced_search_segments", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.integer  "advanced_search_id"
+    t.integer  "organization_id"
+  end
+
+  create_table "advanced_searches", :force => true do |t|
+    t.integer  "organization_id"
+    t.integer  "user_id"
+    t.text     "search_parameters"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "advanced_searches", ["organization_id", "user_id"], :name => "index_advanced_searches_on_organization_id_and_user_id"
+
+  create_table "appeals", :force => true do |t|
+    t.integer  "campaign_id"
+    t.integer  "organization_id"
+    t.string   "name"
+    t.datetime "starts_at"
+    t.datetime "ends_at"
+    t.string   "channel"
+    t.integer  "segment_id"
+    t.string   "status"
+    t.integer  "raised",              :default => 0, :null => false
+    t.text     "notes"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+    t.string   "file_1_file_name"
+    t.string   "file_1_content_type"
+    t.integer  "file_1_file_size"
+    t.datetime "file_1_updated_at"
+    t.string   "file_2_file_name"
+    t.string   "file_2_content_type"
+    t.integer  "file_2_file_size"
+    t.datetime "file_2_updated_at"
+    t.string   "file_3_file_name"
+    t.string   "file_3_content_type"
+    t.integer  "file_3_file_size"
+    t.datetime "file_3_updated_at"
+    t.datetime "deleted_at"
+    t.integer  "import_id"
+  end
+
+  add_index "appeals", ["campaign_id"], :name => "index_appeals_on_campaign_id"
+  add_index "appeals", ["ends_at"], :name => "index_appeals_on_ends_at"
+  add_index "appeals", ["organization_id"], :name => "index_appeals_on_organization_id"
+  add_index "appeals", ["segment_id"], :name => "index_appeals_on_segment_id"
+  add_index "appeals", ["starts_at"], :name => "index_appeals_on_starts_at"
+  add_index "appeals", ["status"], :name => "index_appeals_on_status"
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id"
@@ -73,6 +136,34 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
   add_index "audits", ["created_at"], :name => "index_audits_on_created_at"
   add_index "audits", ["user_id", "user_type"], :name => "user_index"
 
+  create_table "budget_restrictions", :force => true do |t|
+    t.integer  "organization_id"
+    t.string   "name"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  create_table "campaigns", :force => true do |t|
+    t.integer  "organization_id"
+    t.string   "name"
+    t.datetime "starts_at"
+    t.datetime "ends_at"
+    t.string   "status",                :default => "active", :null => false
+    t.text     "notes"
+    t.integer  "goal",                  :default => 0,        :null => false
+    t.integer  "raised",                :default => 0,        :null => false
+    t.integer  "budget_restriction_id"
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
+    t.datetime "deleted_at"
+    t.integer  "import_id"
+  end
+
+  add_index "campaigns", ["ends_at"], :name => "index_campaigns_on_ends_at"
+  add_index "campaigns", ["organization_id"], :name => "index_campaigns_on_organization_id"
+  add_index "campaigns", ["starts_at"], :name => "index_campaigns_on_starts_at"
+  add_index "campaigns", ["status"], :name => "index_campaigns_on_status"
+
   create_table "carts", :force => true do |t|
     t.string   "state"
     t.string   "transaction_id"
@@ -93,6 +184,9 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.integer "event_id"
     t.integer "organization_id"
   end
+
+  add_index "charts", ["event_id"], :name => "index_charts_on_event_id"
+  add_index "charts", ["organization_id"], :name => "index_charts_on_organization_id"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -136,10 +230,28 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.integer  "amount"
     t.integer  "cart_id"
     t.integer  "organization_id"
+    t.integer  "campaign_id"
+    t.integer  "appeal_id"
+    t.integer  "order_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "service_fee",     :default => 0
+    t.datetime "commitment_date"
+    t.datetime "ack_sent_date"
+    t.boolean  "match_eligible",  :default => false
+    t.integer  "matcher"
+    t.integer  "eligible_amount"
+    t.integer  "ratio"
+    t.boolean  "pledge",          :default => false
+    t.string   "fiscal_year"
+    t.integer  "received_amount", :default => 0
   end
+
+  add_index "donations", ["appeal_id"], :name => "index_donations_on_appeal_id"
+  add_index "donations", ["campaign_id"], :name => "index_donations_on_campaign_id"
+  add_index "donations", ["cart_id"], :name => "index_donations_on_cart_id"
+  add_index "donations", ["order_id"], :name => "index_donations_on_order_id"
+  add_index "donations", ["organization_id"], :name => "index_donations_on_organization_id"
 
   create_table "events", :force => true do |t|
     t.string   "name"
@@ -182,6 +294,12 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.integer  "limit_per_pass"
   end
 
+  add_index "events_pass_types", ["event_id", "pass_type_id"], :name => "index_events_pass_types_on_event_id_and_pass_type_id"
+  add_index "events_pass_types", ["event_id"], :name => "index_events_pass_types_on_event_id"
+  add_index "events_pass_types", ["organization_id"], :name => "index_events_pass_types_on_organization_id"
+  add_index "events_pass_types", ["pass_type_id", "event_id"], :name => "index_events_pass_types_on_pass_type_id_and_event_id"
+  add_index "events_pass_types", ["pass_type_id"], :name => "index_events_pass_types_on_pass_type_id"
+
   create_table "gateway_transactions", :force => true do |t|
     t.string   "transaction_id"
     t.boolean  "success"
@@ -198,10 +316,10 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
   create_table "households", :force => true do |t|
     t.string   "name"
     t.integer  "organization_id"
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
+    t.datetime "created_at",                                    :null => false
+    t.datetime "updated_at",                                    :null => false
     t.boolean  "shared_address",             :default => true
-    t.boolean  "overwrite_member_addresses", :default => true, :null => false
+    t.boolean  "overwrite_member_addresses", :default => false, :null => false
   end
 
   create_table "import_errors", :force => true do |t|
@@ -244,6 +362,8 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.integer  "organization_id"
     t.string   "type"
   end
+
+  add_index "imports", ["organization_id"], :name => "index_imports_on_organization_id"
 
   create_table "items", :force => true do |t|
     t.string   "state"
@@ -300,6 +420,16 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.text     "notes"
   end
 
+  create_table "job_monitors", :force => true do |t|
+    t.integer  "organization_id",                    :null => false
+    t.boolean  "finished",        :default => false
+    t.boolean  "failed",          :default => false
+    t.datetime "finished_at"
+    t.string   "file_url"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+  end
+
   create_table "kits", :force => true do |t|
     t.string   "state"
     t.string   "type"
@@ -309,29 +439,37 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.text     "settings"
   end
 
+  create_table "list_groupings", :force => true do |t|
+    t.integer  "subscribed_list_id"
+    t.integer  "mailchimp_id"
+    t.string   "name"
+    t.string   "group"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  add_index "list_groupings", ["subscribed_list_id"], :name => "index_list_groupings_on_subscribed_list_id"
+
   create_table "members", :force => true do |t|
-    t.string   "email",                                   :default => "", :null => false
-    t.string   "encrypted_password",                      :default => ""
+    t.string   "email",                                :default => "", :null => false
+    t.string   "encrypted_password",                   :default => ""
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                           :default => 0
+    t.integer  "sign_in_count",                        :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "invitation_token",          :limit => 60
+    t.string   "invitation_token",       :limit => 60
     t.datetime "invitation_sent_at"
     t.datetime "suspended_at"
     t.string   "suspension_reason"
     t.integer  "organization_id"
     t.integer  "person_id"
-    t.datetime "created_at",                                              :null => false
-    t.datetime "updated_at",                                              :null => false
-    t.string   "member_number",                                           :null => false
-    t.integer  "current_memberships_count",               :default => 0
-    t.integer  "lapsed_memberships_count",                :default => 0
-    t.integer  "past_memberships_count",                  :default => 0
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
+    t.string   "member_number",                                        :null => false
     t.string   "pdf_file_name"
     t.string   "pdf_content_type"
     t.integer  "pdf_file_size"
@@ -375,6 +513,7 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.integer  "renewal_price",                            :default => 0
     t.boolean  "offer_renewal",                            :default => false
     t.integer  "limit_per_transaction",                    :default => 1
+    t.integer  "advanced_search_segment_id"
   end
 
   add_index "membership_types", ["organization_id"], :name => "index_membership_types_on_organization_id"
@@ -432,6 +571,7 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.string   "type"
     t.string   "payment_method"
     t.text     "special_instructions"
+    t.text     "donor_instructions"
     t.integer  "import_id"
     t.datetime "deleted_at"
     t.text     "notes"
@@ -441,9 +581,12 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.integer  "pdf_file_size"
     t.datetime "pdf_updated_at"
     t.string   "check_number"
+    t.integer  "creator_id"
   end
 
   add_index "orders", ["created_at"], :name => "index_orders_on_created_at"
+  add_index "orders", ["creator_id"], :name => "index_orders_on_creator_id"
+  add_index "orders", ["organization_id"], :name => "index_orders_on_organization_id"
   add_index "orders", ["person_id"], :name => "index_orders_on_person_id"
   add_index "orders", ["transaction_id"], :name => "index_orders_on_transaction_id"
 
@@ -455,16 +598,17 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.string   "website"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "lifetime_value",             :default => 0
+    t.integer  "lifetime_value",          :default => 0
     t.string   "email"
-    t.boolean  "receive_daily_sales_report", :default => true, :null => false
     t.string   "cached_slug"
-    t.integer  "last_member_number",         :default => 0
+    t.integer  "last_member_number",      :default => 0
     t.string   "country"
     t.string   "zip"
     t.string   "state"
     t.string   "phone_number"
     t.string   "discipline"
+    t.integer  "fiscal_month"
+    t.integer  "fiscal_day"
   end
 
   add_index "organizations", ["cached_slug"], :name => "index_organizations_on_cached_slug"
@@ -485,6 +629,7 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.text     "thanks_copy"
     t.text     "email_copy"
     t.datetime "deleted_at"
+    t.integer  "advanced_search_segment_id"
   end
 
   add_index "pass_types", ["organization_id"], :name => "index_pass_types_on_organization_id"
@@ -532,8 +677,9 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.boolean  "do_not_email",          :default => false
     t.string   "salutation"
     t.string   "title"
-    t.text     "subscribed_lists"
+    t.text     "old_subscribed_lists"
     t.integer  "lifetime_donations",    :default => 0
+    t.integer  "lifetime_pledges",      :default => 0
     t.string   "middle_name"
     t.string   "suffix"
     t.integer  "lifetime_ticket_value", :default => 0
@@ -543,8 +689,13 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.integer  "birth_month"
     t.integer  "birth_year"
     t.boolean  "do_not_call",           :default => false
+    t.text     "opted_out_lists"
+    t.string   "nickname"
+    t.string   "listing_name"
+    t.string   "maiden_name"
   end
 
+  add_index "people", ["household_id"], :name => "index_people_on_household_id"
   add_index "people", ["organization_id", "email"], :name => "index_people_on_organization_id_and_email"
   add_index "people", ["organization_id"], :name => "index_people_on_organization_id"
 
@@ -555,6 +706,8 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "phones", ["person_id"], :name => "index_phones_on_person_id"
 
   create_table "relations", :force => true do |t|
     t.string   "description"
@@ -575,6 +728,19 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
     t.boolean  "starred",     :default => false
+    t.datetime "deleted_at"
+  end
+
+  create_table "scheduled_pledge_payments", :force => true do |t|
+    t.integer  "amount"
+    t.integer  "amount_received"
+    t.integer  "organization_id"
+    t.integer  "order_id"
+    t.integer  "donation_id"
+    t.integer  "person_id"
+    t.date     "date"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "searches", :force => true do |t|
@@ -588,6 +754,9 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.integer  "max_donations_amount"
     t.datetime "min_donations_date"
     t.datetime "max_donations_date"
+    t.integer  "campaign_id"
+    t.integer  "appeal_id"
+    t.string   "gift_type"
     t.string   "tagging"
     t.datetime "created_at",                                  :null => false
     t.datetime "updated_at",                                  :null => false
@@ -610,6 +779,13 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.datetime "max_membership_start_date"
     t.datetime "min_membership_end_date"
     t.datetime "max_membership_end_date"
+    t.integer  "birth_day"
+    t.integer  "birth_month"
+    t.integer  "birth_year"
+    t.text     "mailchimp_lists"
+    t.text     "not_mailchimp_lists"
+    t.text     "groupings"
+    t.text     "not_groupings"
   end
 
   add_index "searches", ["organization_id"], :name => "index_searches_on_organization_id"
@@ -623,6 +799,8 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.boolean "box_office",  :default => true
     t.boolean "members",     :default => true, :null => false
   end
+
+  add_index "sections", ["chart_id"], :name => "index_sections_on_chart_id"
 
   create_table "segments", :force => true do |t|
     t.string   "name",            :null => false
@@ -661,11 +839,30 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
   add_index "slugs", ["scope", "slug", "created_at"], :name => "index_slugs_on_scope_and_slug_and_created_at"
   add_index "slugs", ["scope", "slug"], :name => "index_slugs_on_scope_and_slug"
 
-  create_table "suggested_households", :force => true do |t|
-    t.string   "ids",                           :null => false
-    t.boolean  "ignored",    :default => false
+  create_table "soft_credits", :force => true do |t|
+    t.integer  "amount"
+    t.integer  "donation_id"
+    t.integer  "person_id"
+    t.integer  "organization_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  create_table "subscribed_lists", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "list_id"
+    t.boolean  "confirmed",  :default => false
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
+    t.boolean  "bounced",    :default => false
+  end
+
+  create_table "suggested_households", :force => true do |t|
+    t.string   "ids",                                :null => false
+    t.boolean  "ignored",         :default => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+    t.integer  "organization_id"
   end
 
   create_table "taggings", :force => true do |t|
@@ -680,6 +877,7 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
 
   add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
   add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
+  add_index "taggings", ["taggable_type", "taggable_id", "context"], :name => "index_taggings_on_taggable_type_and_taggable_id_and_context"
 
   create_table "tags", :force => true do |t|
     t.string "name"
@@ -700,9 +898,13 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.integer  "membership_type_id"
     t.integer  "tickets_per_membership"
     t.boolean  "member_ticket",          :default => false
+    t.datetime "deleted_at"
+    t.text     "receipt_details"
   end
 
   add_index "ticket_types", ["membership_type_id"], :name => "index_ticket_types_on_membership_type_id"
+  add_index "ticket_types", ["section_id"], :name => "index_ticket_types_on_section_id"
+  add_index "ticket_types", ["show_id"], :name => "index_ticket_types_on_show_id"
 
   create_table "tickets", :force => true do |t|
     t.string   "venue"
@@ -728,22 +930,31 @@ ActiveRecord::Schema.define(:version => 20140819204149) do
     t.datetime "qr_code_updated_at"
     t.string   "uuid",                                    :null => false
     t.integer  "pass_id"
+    t.datetime "processing_at"
   end
 
   add_index "tickets", ["buyer_id"], :name => "index_tickets_on_buyer_id"
   add_index "tickets", ["cart_id"], :name => "index_tickets_on_cart_id"
   add_index "tickets", ["discount_id"], :name => "index_tickets_on_discount_id"
   add_index "tickets", ["organization_id"], :name => "index_tickets_on_organization_id"
+  add_index "tickets", ["pass_id"], :name => "index_tickets_on_pass_id"
   add_index "tickets", ["section_id", "show_id", "state"], :name => "index_tickets_on_section_id_and_show_id_and_state"
   add_index "tickets", ["show_id"], :name => "index_tickets_on_show_id"
   add_index "tickets", ["state"], :name => "index_tickets_on_state"
   add_index "tickets", ["ticket_type_id"], :name => "index_tickets_on_ticket_type_id"
   add_index "tickets", ["uuid"], :name => "index_tickets_on_uuid", :unique => true
+  add_index "tickets", ["validated_action_id"], :name => "index_tickets_on_validated_action_id"
 
   create_table "user_memberships", :force => true do |t|
     t.integer "user_id"
     t.integer "organization_id"
-    t.boolean "owner",           :default => false
+    t.boolean "organization_administrator",    :default => false
+    t.boolean "manager",                       :default => false
+    t.boolean "general_associate",             :default => false
+    t.boolean "box_office_associate",          :default => false
+    t.boolean "receive_daily_sales_report",    :default => false
+    t.boolean "receive_donation_notification", :default => false
+    t.boolean "receive_door_list",             :default => false
   end
 
   create_table "users", :force => true do |t|
