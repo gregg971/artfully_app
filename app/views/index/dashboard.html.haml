@@ -1,29 +1,79 @@
-.row-fluid{:style => "margin-top: 100px"}
-  .span6.offset3
-    .well
-      .center
-        %h1="Hi"
+- if current_user.is_in_organization?
+  .row
+    .span4
+      .well#dashboard-user-info
+        .row-fluid
+          .span4
+            = gravatar_image_tag(current_user.email, :alt => 'User icon', :class => 'dashboard-grav', :gravatar => { :size => 64 })
+          .span8
+            - if current_user.is_in_organization?          
+              .email
+                %b= "#{truncate(current_user.email, :length => 28, :separator => ' ', :omission => '...')}"
+              =current_role
+              .link= link_to "Account Administration", organization_path(current_user.current_organization)
+              .link= link_to "Sign Out", destroy_user_session_path
+            - else
+              You are not in an organization yet.  Ask your organization administrator to add you, or
+              =link_to "create your own.", new_organization_path
 
-      %p
-        Thanks for setting up Artful.ly Open Source Edition!  
+      %h3 Events
+      - unless @events.blank?
+        %ul#event-list.row-fluid
+          - @events.each do |event|
+            %li.row-fluid.event-list-item{:style => "margin-left: 0px; margin-right:10px'"}
+              .span12
+                .row-fluid
+                  .span4.event-icon-container
+                    = render :partial => 'shared/event_image_icon', :locals => { :event => event }
+                  .span8
+                    %h4.event-link= link_to truncate(event.name, :length => 35), event_path(event), :title => 'event-name'
+                    %ul.mini-stats
+                      %li= "#{pluralize event.sold, 'ticket'} sold"
+                      %li= "#{pluralize event.on_sale, 'ticket'} on sale"
+                      %li= "#{number_as_cents(event.sales_total)} total sales"
 
-      %p
-        Some new things we put in version 1.3:
+      -if current_user.can? :manage, Event
+        -if @events.blank?
+          .no-image#add-a-description
+            #text
+              =link_to 'Create a new event', new_event_path
+              %p
+                Creating an event is the first step toward scheduling shows and selling tickets. 
+        -else
+          = link_to "Create Event", new_event_path, :class => "btn btn-primary"
+          %span.pull-right
+            =icon_link_to("View All Events", events_path, 'fa-arrow-right', 'btn', '')
 
-      %ul{:style => "margin-left: 20px; list-style-type: circle;"}
-        %li Relationships
-        %li Householding
-        %li Fundriaing campaign management
-        %li QR coded scannable tickets
-        %li Ruby 2.1
-        %li Mailchimp integration
+    .span8
+      =render :partial => 'recent_activity'
+      
+-else
+  .row-fluid{:style => "margin-top: 100px"}
+    .span6.offset3
+      .well
+        .center
+          %h1="Hi"
 
-      %p
-        Before you can use all the new stuff, you'll need to setup your organization. Click the big green button to get started.
+        %p
+          Thanks for setting up Artful.ly Open Source Edition!  
 
-      %p
-        =link_to "Set Up Your Organization Now", new_organization_path, :class => "btn btn-success btn-large btn-block"
+        %p
+          Some new things we put in version 1.3:
 
-      %p
-        Find out more about Artful.ly Open Source Edition
-        =link_to "here", "https://www.artful.ly/opensource"
+        %ul{:style => "margin-left: 20px; list-style-type: circle;"}
+          %li Relationships
+          %li Householding
+          %li Fundriaing campaign management
+          %li QR coded scannable tickets
+          %li Ruby 2.1
+          %li Mailchimp integration
+
+        %p
+          Before you can use all the new stuff, you'll need to setup your organization. Click the big green button to get started.
+
+        %p
+          =link_to "Set Up Your Organization Now", new_organization_path, :class => "btn btn-success btn-large btn-block"
+
+        %p
+          Find out more about Artful.ly Open Source Edition
+          =link_to "here", "https://www.artful.ly/opensource"

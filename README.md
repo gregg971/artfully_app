@@ -61,6 +61,7 @@ You'll need the following apps/services to use Artful.ly OSE
 * [MySQL](http://www.mysql.com)
 * [Braintree](https://www.braintreepayments.com)
 * [S3](http://aws.amazon.com/s3/)
+* [Redis](http://redis.io/)
 
 ## Prerequisites
 
@@ -71,6 +72,12 @@ Make sure you have the following installed on your system
 * [Rails 3.2.22](http://rubyonrails.org/)
 * [Heroku cli](https://github.com/heroku/heroku/)
 * [Git](http://git-scm.com/)
+
+And if you're running locally, you'll need
+
+* [Solr](http://lucene.apache.org/solr/)
+* [MySQL](http://www.mysql.com)
+* [Redis](http://redis.io/)
 
 Also, before you begin you should create your production MySQL database.
 

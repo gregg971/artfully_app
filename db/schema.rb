@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151113155793) do
+ActiveRecord::Schema.define(:version => 20151116204434) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -786,6 +786,7 @@ ActiveRecord::Schema.define(:version => 20151113155793) do
     t.text     "not_mailchimp_lists"
     t.text     "groupings"
     t.text     "not_groupings"
+    t.boolean  "has_donated",               :default => true
   end
 
   add_index "searches", ["organization_id"], :name => "index_searches_on_organization_id"

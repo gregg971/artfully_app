@@ -5,6 +5,8 @@ require 'rails/all'
 require 'yaml'
 YAML::ENGINE.yamler = 'syck'
 
+require 'redis'
+
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
   Bundler.require(*Rails.groups(:assets => %w(development test)))
@@ -39,7 +41,6 @@ module ArtfullyApp
     
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password, :password_confirmation, :number, :verification_value, :cvv, :card_number]
-    ENV.keys.each {|k| Exceptional::ENVIRONMENT_FILTER << k}
     
     #Heroku needs this flag set.  Other hosting providers may not.
     config.assets.initialize_on_precompile = false
