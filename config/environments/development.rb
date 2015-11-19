@@ -42,4 +42,4 @@ ArtfullyApp::Application.configure do
   ActiveMerchant::Billing::Base.mode = :test
 end
 
-MAILCHIMP_WEBHOOK_URL = { :host => "artfullyose.dev", :protocol => "https" }
+MAILCHIMP_WEBHOOK_URL = { :host => ENV["MAILCHIMP_WEBHOOK_URL"], :protocol => "https" }
