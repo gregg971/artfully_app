@@ -14,6 +14,8 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
+MAILCHIMP_WEBHOOK_URL = { :host => "www.artful.ly", :protocol => "https" }
+
 module ArtfullyApp
   class Application < Rails::Application
 

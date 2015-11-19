@@ -142,7 +142,9 @@ Artful.ly OSE requires the following environment variables to be set if they are
     S3_ACCESS_KEY_ID
     S3_SECRET_ACCESS_KEY
     
-    WEBSOLR_URL
+    WEBSOLR_URL - This will be set automatically if you use the WebSolr Heroku Addon
+
+    MAILCHIMP_WEBHOOK_URL - This should be the hostname of your production app (yourdomain.com)
 
 Additionally these are defaulted in the config.ru and config/unicorn.rb files but can be set in the environment as well
     
