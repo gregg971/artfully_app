@@ -1,19 +1,9 @@
 Wisepdf::Configuration.configure do |config|
-  spec = Gem::Specification.find_by_name('wkhtmltopdf-binary')
-  gem_root = spec.gem_dir
-  platform = case RUBY_PLATFORM
-    when /x86.*64.*linux/
-      'linux_x64'
-    when /linux/
-      'linux_386'
-    when /darwin/
-      'darwin_386'
-    else
-      nil
+  config.wkhtmltopdf = if File.exist?('/usr/local/bin/wkhtmltopdf')
+   '/usr/local/bin/wkhtmltopdf'
+  elsif File.exist?('/usr/bin/wkhtmltopdf')
+   '/usr/bin/wkhtmltopdf'
+  else
+   "#{Gem::Specification.find_by_name('wkhtmltopdf-binary-edge').gem_dir}/bin/wkhtmltopdf"
   end
-
-  binary = "#{gem_root}/bin/wkhtmltopdf"
-  binary << "_#{platform}" if platform
-
-  config.wkhtmltopdf = binary
 end
