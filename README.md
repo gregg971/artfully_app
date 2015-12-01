@@ -197,28 +197,19 @@ If you're using SendGrid to send email, enable the starter plan with the followi
 
 See the [SendGrid documentation](https://addons.heroku.com/sendgrid) for more information.
 
-### Setup Daily Sales Email (Optional)
-
-Artful.ly can send a nightly email to the organization owner. To configure this, enable the heroku scheduler add-on
-
-    heroku addons:add scheduler
-
-Go to Heroku Scheduler Dashboard, Click "Add Job...", and enter "rake csv:sales". Set the frequency to "Daily" and set the time to a time that is convenient for you.
-
-For more information on Scheduler, see https://devcenter.heroku.com/articles/scheduler#scheduling-jobs
-
 ### Setup the production database
 
-Before running this, you must have setup and configured a MySQL database.  If you database is on Amazon's RDS, you'll have to enable that plugin on Heroku by running
+Before running this, you must have setup and configured a MySQL database.
 
-    heroku addons:add amazon_rds
     heroku config:add DATABASE_URL=mysql2://username:password@url.ofyourdatabase.com/databaseName
-
-Otherwise, make sure you have edited, committed, and pushed your database.yml file.
 
 Finally, run:
 
     heroku run bundle exec rake db:schema:load
+
+### Setup Nightly Jobs
+
+TODO
 
 ### Set environment variables
 

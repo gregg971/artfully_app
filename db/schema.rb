@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151118141835) do
+ActiveRecord::Schema.define(:version => 20151201135361) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -183,6 +183,9 @@ ActiveRecord::Schema.define(:version => 20151118141835) do
     t.boolean "is_template"
     t.integer "event_id"
     t.integer "organization_id"
+    t.string  "type"
+    t.integer "venue_id"
+    t.string  "public_note"
   end
 
   add_index "charts", ["event_id"], :name => "index_charts_on_event_id"
@@ -278,6 +281,7 @@ ActiveRecord::Schema.define(:version => 20151118141835) do
     t.boolean  "members_only",                 :default => false
     t.text     "cached_stats"
     t.string   "subtitle"
+    t.boolean  "assigned",                     :default => false
   end
 
   add_index "events", ["uuid"], :name => "index_events_on_uuid"
@@ -402,7 +406,7 @@ ActiveRecord::Schema.define(:version => 20151118141835) do
   create_table "items_view", :id => false, :force => true do |t|
     t.integer  "order_id",             :default => 0
     t.string   "order_type"
-    t.integer  "item_id",              :default => 0, :null => false
+    t.integer  "item_id",              :default => 0,  :null => false
     t.string   "product_type"
     t.integer  "organization_id",      :default => 0
     t.string   "organization_name"
@@ -418,6 +422,7 @@ ActiveRecord::Schema.define(:version => 20151118141835) do
     t.integer  "nongift_amount",       :default => 0
     t.text     "special_instructions"
     t.text     "notes"
+    t.string   "creator",              :default => ""
   end
 
   create_table "job_monitors", :force => true do |t|
@@ -791,6 +796,33 @@ ActiveRecord::Schema.define(:version => 20151118141835) do
 
   add_index "searches", ["organization_id"], :name => "index_searches_on_organization_id"
 
+  create_table "seats", :force => true do |t|
+    t.integer  "chart_id",                                :null => false
+    t.integer  "row_index"
+    t.integer  "col_index"
+    t.string   "row_label"
+    t.string   "col_label"
+    t.string   "label"
+    t.boolean  "available"
+    t.boolean  "killed"
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
+    t.boolean  "house_hold",           :default => false
+    t.boolean  "development_hold",     :default => false
+    t.boolean  "tech_hold",            :default => false
+    t.boolean  "contractual_hold",     :default => false
+    t.boolean  "person_hold",          :default => false
+    t.boolean  "press_hold",           :default => false
+    t.boolean  "wheelchair",           :default => false
+    t.boolean  "wheelchair_companion", :default => false
+    t.boolean  "aisle",                :default => false
+    t.string   "seat_note"
+    t.string   "hold_note"
+    t.integer  "held_for_id"
+  end
+
+  add_index "seats", ["held_for_id"], :name => "index_seats_on_held_for_id"
+
   create_table "sections", :force => true do |t|
     t.text    "name"
     t.integer "capacity"
@@ -907,6 +939,14 @@ ActiveRecord::Schema.define(:version => 20151118141835) do
   add_index "ticket_types", ["section_id"], :name => "index_ticket_types_on_section_id"
   add_index "ticket_types", ["show_id"], :name => "index_ticket_types_on_show_id"
 
+  create_table "ticket_types_seats", :force => true do |t|
+    t.integer "ticket_type_id"
+    t.integer "seat_id"
+  end
+
+  add_index "ticket_types_seats", ["seat_id"], :name => "index_ticket_types_seats_on_seat_id"
+  add_index "ticket_types_seats", ["ticket_type_id"], :name => "index_ticket_types_seats_on_ticket_type_id"
+
   create_table "tickets", :force => true do |t|
     t.string   "venue"
     t.string   "state"
@@ -932,6 +972,7 @@ ActiveRecord::Schema.define(:version => 20151118141835) do
     t.string   "uuid",                                    :null => false
     t.integer  "pass_id"
     t.datetime "processing_at"
+    t.integer  "seat_id"
   end
 
   add_index "tickets", ["buyer_id"], :name => "index_tickets_on_buyer_id"
@@ -939,6 +980,7 @@ ActiveRecord::Schema.define(:version => 20151118141835) do
   add_index "tickets", ["discount_id"], :name => "index_tickets_on_discount_id"
   add_index "tickets", ["organization_id"], :name => "index_tickets_on_organization_id"
   add_index "tickets", ["pass_id"], :name => "index_tickets_on_pass_id"
+  add_index "tickets", ["seat_id"], :name => "index_tickets_on_seat_id"
   add_index "tickets", ["section_id", "show_id", "state"], :name => "index_tickets_on_section_id_and_show_id_and_state"
   add_index "tickets", ["show_id"], :name => "index_tickets_on_show_id"
   add_index "tickets", ["state"], :name => "index_tickets_on_state"
