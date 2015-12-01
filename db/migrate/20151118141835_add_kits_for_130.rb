@@ -3,5 +3,6 @@ class AddKitsFor130 < ActiveRecord::Migration
     MailchimpKit.create!({:state => "activated", :organization_id => 1}, :without_protection => true)
     ScannableTicketsKit.create!({:state => "activated", :organization_id => 1}, :without_protection => true)
     CampaignsKit.create!({:state => "activated", :organization_id => 1}, :without_protection => true)
+    AssignedSeatingKit.create!({:state => "activated", :organization_id => 1}, :without_protection => true)
   end
 end
