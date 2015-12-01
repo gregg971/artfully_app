@@ -102,7 +102,11 @@ All ongoing development happens in topic branches. Note this is different from t
     gem install foreman
     bundle install
 
-## Database
+## Running Locally
+
+If you intend to do any custom development or testing, go ahead and set up Artful.ly OSE locally on your machine.  If you have no interest in this, feel free to skip ahead to Deployment to Heroku
+
+### Database
 
 Copy database.yml.sample into a local copy
 
@@ -116,9 +120,9 @@ Install the schema
 
     rake db:schema:load
 
-## Running Locally
+Then setup the kits
 
-If you intend to do any custom development or testing, go ahead and set up Artful.ly OSE locally on your machine.  If you have no interest in this, feel free to skip ahead to Deployment to Heroku
+    rake artfully_app:create_kits
     
 Open a rails console with `rails console` and run
 
@@ -210,6 +214,10 @@ Finally, run:
 ### Setup Nightly Jobs
 
 TODO
+
+### Setup Kits
+
+    heroku run rake artfully_app:create_kits
 
 ### Set environment variables
 
