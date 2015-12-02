@@ -28,6 +28,6 @@ end
 
 #This points to edge.  For stable, use a published gem https://rubygems.org/gems/artfully_ose
 # gem 'artfully_ose', :git => 'git://github.com/fracturedatlas/artfully_ose.git'
-gem 'artfully_ose', :path => '../artful.ly/lib/artfully_ose'
+# gem 'artfully_ose', :path => '../artful.ly/lib/artfully_ose'
 
-# gem 'artfully_ose', "1.3.0.pre3"
+gem 'artfully_ose', "1.3.0.pre4"
