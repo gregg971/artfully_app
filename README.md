@@ -227,6 +227,13 @@ If you didn't set environment variables in `config/environment.rb`, you'll need 
     
 If you have a Google Analytics account, you can set the environment variables `GA_ACCOUNT` and `GA_DOMAIN` to enable Google Analytics in Artful.ly OSE.
 
+### Set Nightly Jobs
+
+In Herku Scheduler and set the following jobs to run at night at Daily frequently.
+
+    rake email:daily_report
+    rake email:door_list
+
 ### Create your first user
 
 This user will be the organization administrator.  In a Heroku console, run
